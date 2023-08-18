@@ -1,0 +1,50 @@
+#include <Servo.h>
+#include <LiquidCrystal.h>
+#define echo 8
+#define trig 9
+int distance=0 , t=0 ;
+const int rs=12,en=11,d4=5,d5=4, d6=3, d7=2 ;
+LiquidCrystal lcd (rs,en,d4,d5,d6,d7);
+ Servo myservo ;
+
+void setup()
+{
+  pinMode(echo,INPUT);
+  pinMode(trig,OUTPUT);
+
+lcd.begin(16,2);
+ myservo.attach(7);
+ myservo.write(0);
+}
+void loop()
+{
+  digitalWrite(trig,LOW);
+  delayMicroseconds(5);
+  digitalWrite(trig,HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig,LOW);
+  t=pulseIn(echo,HIGH);
+  distance=t/57;
+ 
+
+  for(int i=0 ; i<160; i++)
+  {
+  myservo.write(i);
+  delay(30);
+  }
+
+for(int j=160 ; j>0 ; j--)
+{
+myservo.write(j);
+delay(30);
+}
+
+
+if(distance <= 15)
+{lcd.setCursor(0,0);
+lcd.print("something");
+lcd.setCursor(0,1);
+lcd.print("detected");
+}
+
+}
